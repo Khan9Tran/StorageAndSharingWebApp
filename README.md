@@ -1,7 +1,15 @@
-# StorageAndSharingWebApp
-Web sử dụng framework streamlit và boto3 để tương tác với AWS, cho phép upload file, download file và chia sẽ bằng cách sử dụng tài khoản IAM được cấp trước.
-\nCách sử dụng:
+# Storage and Sharing Web App
 
-  \nTạo môi trường ảo với: venv\Scripts\activate
-  \nThực hiện chạy web app: streamlit run main.py
-  \n*Cách thoát khỏi môi trường ảo: deactivate
+This web application is built using the Streamlit framework and Boto3 to interact with AWS. It enables users to upload, download, and share files using pre-configured IAM accounts.
+
+## Usage:
+
+1. **Create a Virtual Environment:**
+   ```bash
+   venv\Scripts\activate
+2. **Run the web app:**
+   ```bash
+   streamlit run main.py
+3. **Deactivate the Virtual Environment:**
+    ```bash
+    deactivate
