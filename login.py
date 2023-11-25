@@ -40,7 +40,10 @@ def show_login_form():
         if submitted:
             session = authenticate(aws_access_key_id, aws_secret_access_key)
             placeholder.empty()
+            st.session_state.authenticated = True
+            st.session_state["session"] = session
             return session
+    st.session_state["session"] = None
     return None
 
 if __name__ == "__main__":

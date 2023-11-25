@@ -2,16 +2,16 @@ import streamlit as st
 import boto3
 import login
 import share_file as sf
+import file_control as fc
 
 def list_files(session):
     # Create a button to copy the link to the clipboard
     if st.button("Copy Link to Clipboard"):
-        copy_to_clipboard(link)
+        pass
 
 def new_upload(session):
-    # Thực hiện các thao tác để tải lên file mới
-    st.write("Upload a new file:")
-    st.u
+    if session is not None: 
+        fc.new_upload(session)
 
 def main_menu(session):
     st.sidebar.title("Menu")
@@ -24,10 +24,12 @@ def main_menu(session):
         new_upload(session)
 
 
-if __name__ =="__main__":
+if 'authenticated' not in st.session_state:
+    st.session_state.authenticated = False
 
+# Display login form if not authenticated
+if not st.session_state.authenticated:
     session = login.show_login_form()
-
-    if session is not None: 
-        main_menu(session)
-        print(sf.shared_url(session,'category1.jpg'))
+session = st.session_state.session
+if  session is not None:
+    main_menu(session)
