@@ -11,6 +11,7 @@ def list_files(session):
 def new_upload(session):
     # Thực hiện các thao tác để tải lên file mới
     st.write("Upload a new file:")
+    st.u
 
 def main_menu(session):
     st.sidebar.title("Menu")
