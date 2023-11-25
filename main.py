@@ -5,6 +5,7 @@ import share_file as sf
 import file_control as fc
 
 def list_files(session):
+    fc.get_list_files(session)
     # Create a button to copy the link to the clipboard
     if st.button("Copy Link to Clipboard"):
         pass
