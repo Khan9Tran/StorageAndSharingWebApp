@@ -10,14 +10,17 @@ def shared_url(session, filename):
     url = s3_client.generate_presigned_url(
     ClientMethod='get_object',
     Params={'Bucket': 'storage-and-sharing-file-kbh', 'Key': '{}/{}'.format(username,filename)},
-    ExpiresIn=3600
+    ExpiresIn=3600,
     )
 
     return url
+
+
+
 if __name__ == "__main__": 
     aws_access_key_id = 'AKIAYIZEJF73OJH7D4XE'
     aws_secret_access_key = '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'
     session = login.show_login_form()
     if session is not None:
-        
         print(shared_url(session,'DSCF6782_750x960.webp'))
+
