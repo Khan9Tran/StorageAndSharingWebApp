@@ -1,72 +1,28 @@
-import logging
-from botocore.exceptions import ClientError
-import boto3 as boto
+import boto3
+import streamlit as st
+import os
 
-# Setup logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+def upload_to_s3(uploaded_file, session):
+    st.write("Uploading file to S3...")
 
-class ObjectWrapper:
-    """Encapsulates S3 object actions."""
+    # AWS credentials
+    bucket_name = "test-bucket-tlnk"
+    iam_client = session.client('iam')
 
-    def __init__(self, s3_object):
-        """
-        :param s3_object: A Boto3 Object resource. This is a high-level resource in Boto3
-                          that wraps object actions in a class-like structure.
-        """
-        self.object = s3_object
-        self.key = self.object.key
+    # get username
+    response = iam_client.get_user()
+    username = response["User"]["UserName"]
 
-    def put(self, data):
-        """
-        Upload data to the object.
+    # Create a Boto3 S3 client
+    s3 = boto3.client('s3')
 
-        :param data: The data to upload. This can either be bytes or a string. When this
-                     argument is a string, it is interpreted as a file name, which is
-                     opened in read bytes mode.
-        """
-        put_data = data
-        if isinstance(data, str):
-            try:
-                with open(data, "rb") as file:
-                    put_data = file.read()
-            except FileNotFoundError:
-                logger.exception("File not found: '%s'.", data)
-                raise
-            except IOError:
-                logger.exception("Error reading file: '%s'.", data)
-                raise
+    # Get the file name and extension
+    file_name, file_extension = os.path.splitext(uploaded_file.name)
 
-        try:
-            self.object.put(Body=put_data)
-            self.object.wait_until_exists()
-            logger.info(
-                "Put object '%s' to bucket '%s'.",
-                self.object.key,
-                self.object.bucket_name,
-            )
-        except ClientError:
-            logger.exception(
-                "Couldn't put object '%s' to bucket '%s'.",
-                self.object.key,
-                self.object.bucket_name,
-            )
-            raise
+    # Specify the S3 key (file path in the bucket)
+    s3_key = f"{username}/{file_name}{file_extension}"
 
-# Example usage:
-if __name__ == "__main__":
-    # Replace 'your_access_key', 'your_secret_key', and 'your_bucket_name' with your AWS credentials and bucket name
-    s3 = boto.resource("s3", aws_access_key_id='AKIAYIZEJF73OJH7D4XE', aws_secret_access_key='cXVJvDtbVcW48teFI7pf/OzaGZnA0HQOEhcpzS0P')
-    bucket = s3.Bucket('test-bucket-tlnk')
+    # Upload the file to S3
+    s3.upload_fileobj(uploaded_file, bucket_name, s3_key)
 
-    # Replace 'your_file_path' with the path to the file you want to upload
-    file_path = 'D:/uploads/category/1700440569479.png'
-    
-    # Replace 'your_object_key' with the desired key for the object in the bucket
-    object_key = 'thanhhieu123/category2.jpg'
-
-    # Create an ObjectWrapper instance
-    s3_object = ObjectWrapper(bucket.Object(object_key))
-
-    # Upload the file
-    s3_object.put(file_path)
+    st.success("File uploaded to S3 successfully!")
