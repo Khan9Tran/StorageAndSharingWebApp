@@ -30,9 +30,4 @@ def shared_url(session, filename):
             print("Credentials not available")
             return None
 
-if __name__ == "__main__":
-    aws_access_key_id = 'AKIAYIZEJF73OJH7D4XE'
-    aws_secret_access_key = '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'
-    session = login.show_login_form()
-    if session is not None:
-        print(shared_url(session, 'DSCF6782_750x960.webp'))
+
