@@ -33,11 +33,13 @@ def authenticate(aws_access_key_id, aws_secret_access_key):
 
 # Hàm hiển thị form đăng nhập
 def show_login_form():
-    with st.form("login_form"):
+    placeholder = st.empty()
+    with placeholder.form("login_form"):
         aws_access_key_id, aws_secret_access_key = get_credentials()
         submitted = st.form_submit_button("Login")
         if submitted:
             session = authenticate(aws_access_key_id, aws_secret_access_key)
+            placeholder.empty()
             return session
     return None
 
