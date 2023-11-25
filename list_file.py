@@ -26,7 +26,7 @@ import streamlit as st
 #     except NoCredentialsError:
 #         st.error("Error: Unable to list or download files in S3 bucket with the provided session.")
 def list_objects_in_folder(session):
-    bucket_name = "test-bucket-tlnk"
+    bucket_name = "storage-and-sharing-file-kbh"
     iam_client = session.client('iam')
 
     # get username

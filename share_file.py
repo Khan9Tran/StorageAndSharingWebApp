@@ -9,7 +9,7 @@ def shared_url(session, filename):
     s3_client = session.client('s3')
     url = s3_client.generate_presigned_url(
     ClientMethod='get_object',
-    Params={'Bucket': 'test-bucket-tlnk', 'Key': '{}/{}'.format(username,filename)},
+    Params={'Bucket': 'storage-and-sharing-file-kbh', 'Key': '{}/{}'.format(username,filename)},
     ExpiresIn=3600
     )
 

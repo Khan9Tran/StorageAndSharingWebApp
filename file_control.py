@@ -20,3 +20,5 @@ def get_list_files(session):
     print("Danh sách các file trong thư mục:")
     for object_name in object_names:
         st.write(object_name)
+
+    
