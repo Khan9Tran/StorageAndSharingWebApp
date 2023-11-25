@@ -4,6 +4,7 @@ import login
 import share_file as sf
 import file_control as fc
 
+
 def list_files(session):
     fc.get_list_files(session)
     # Create a button to copy the link to the clipboard
@@ -15,6 +16,7 @@ def new_upload(session):
         fc.new_upload(session)
 
 def main_menu(session):
+    st.sidebar.write("Hello: " + session.client('iam').get_user()["User"]["UserName"])
     st.sidebar.title("Menu")
     options = ["List Files", "New Upload"]
     choice = st.sidebar.selectbox("Select Option", options)
