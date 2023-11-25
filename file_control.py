@@ -2,6 +2,9 @@ import streamlit as st
 import upload as ul
 import list_file as lf
 import pandas as pd
+import download_file as dlf
+import delete_file as delf
+import share_file as shf
 
 def new_upload(session):
     st.title("New Upload")
@@ -32,8 +35,11 @@ def get_list_files(session):
         # Button để download
         download_button = col2.button("Download", key=f"download_{index}")
         if download_button:
-            # Đưa logic download vào đây
-            st.success(f"{row['File Name']} đã được tải về.")
+            if dlf.download_file_from_s3(session, row['File Name']):
+                st.success("Download successful.")
+            else:
+                st.warning("Download failed.")
+    
 
         # Button để share
         share_button = col3.button("Share", key=f"share_{index}")
@@ -44,9 +50,7 @@ def get_list_files(session):
         # Button để delete
         delete_button = col4.button("Delete", key=f"delete_{index}")
         if delete_button:
-            # Đưa logic delete vào đây
             st.success(f"{row['File Name']} đã được xóa.")
         
         st.write("")  # Xuống dòng cho dòng tiếp theo
 
-    
