@@ -21,8 +21,8 @@ def authenticate(aws_access_key_id, aws_secret_access_key):
         )
 
         # Kiểm tra đăng nhập bằng cách gọi lệnh cơ bản
-        s3 = session.client('s3')
-        s3.list_buckets()
+        iam = session.client('iam')
+        iam.get_user()
         st.success("Login successful")
         return session
     except Exception as e:
