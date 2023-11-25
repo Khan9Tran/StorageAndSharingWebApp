@@ -1,26 +1,35 @@
 import boto3
 import os
-
+from tkinter import Tk, filedialog
 import subprocess
 
+def select_folder_dialog():
+    root = Tk()
+    root.attributes('-topmost', True)
+    root.withdraw()
+    folder_selected = filedialog.askdirectory()
+    root.destroy()
+    return folder_selected
 
-# def download_file_from_s3(session, file_download):
-   # pass
-    # s3 = session.client('s3')
 
-    # bucket_name = 'storage-and-sharing-file-kbh'
-    # iam_client = session.client('iam')
-    # response = iam_client.get_user()
+def download_file_from_s3(session, file_download):
+    if session is not None:
+        s3 = session.client('s3')
 
-    # username = response["User"]["UserName"]
-    # file_name, file_extension = os.path.splitext(file_download)
-    # object_key = f"{username}/{file_name}{file_extension}"
-    # try:
-    #     # Tải tệp từ S3 và lưu vào máy tính cục bộ
-    #     s3.download_file(bucket_name, object_key, local_filename)
-    #     print(f"Download successful. File saved to {local_filename}")
-    # except Exception as e:
-    #     print(f"Download failed: {e}")
+        bucket_name = 'storage-and-sharing-file-kbh'
+        iam_client = session.client('iam')
+        response = iam_client.get_user()
+
+        username = response["User"]["UserName"]
+        file_name, file_extension = os.path.splitext(file_download)
+        object_key = f"{username}/{file_name}{file_extension}"
+        local_filename = select_folder_dialog()
+        try:
+            # Tải tệp từ S3 và lưu vào máy tính cục bộ
+            s3.download_file(bucket_name, object_key, local_filename)
+            print(f"Download successful. File saved to {local_filename}/{file_download}")
+        except Exception as e:
+            print(f"Download failed: {e}")
 
 
 # import streamlit as st
@@ -40,28 +49,28 @@ import subprocess
 
 # # Display the link
 # st.markdown(download_link, unsafe_allow_html=True)
-def download_file_from_s3(session, file_download):
-    if session is not None:
-        s3 = session.client('s3')
+# def download_file_from_s3(session, file_download):
+#     if session is not None:
+#         s3 = session.client('s3')
 
-        bucket_name = 'storage-and-sharing-file-kbh'
-        iam_client = session.client('iam')
-        response = iam_client.get_user()
+#         bucket_name = 'storage-and-sharing-file-kbh'
+#         iam_client = session.client('iam')
+#         response = iam_client.get_user()
 
-        username = response["User"]["UserName"]
-        file_name, file_extension = os.path.splitext(file_download)
-        object_key = f"{username}/{file_name}{file_extension}"
+#         username = response["User"]["UserName"]
+#         file_name, file_extension = os.path.splitext(file_download)
+#         object_key = f"{username}/{file_name}{file_extension}"
 
-        try:
-            # Get the user's home directory and create the full path for the local download
-            user_home = os.path.expanduser("~")
-            local_filename = os.path.join(user_home, 'Downloads', file_download)
+#         try:
+#             # Get the user's home directory and create the full path for the local download
+#             user_home = os.path.expanduser("~")
+#             local_filename = os.path.join(user_home, 'Downloads', file_download)
 
-            # Download the file from S3 and save it locally
-            s3.download_file(bucket_name, object_key, local_filename)
-            print(f"Download successful. File saved to {local_filename}")
-        except Exception as e:
-            print(f"Download failed: {e}")
+#             # Download the file from S3 and save it locally
+#             s3.download_file(bucket_name, object_key, local_filename)
+#             print(f"Download successful. File saved to {local_filename}")
+#         except Exception as e:
+#             print(f"Download failed: {e}")
 
 import login 
 if __name__ == '__main__':
