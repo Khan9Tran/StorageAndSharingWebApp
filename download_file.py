@@ -14,6 +14,7 @@ def select_folder_dialog():
         return folder_selected
     else:
         root.destroy()
+        
         return None
 
 def download_file_from_s3(session, file_download):
