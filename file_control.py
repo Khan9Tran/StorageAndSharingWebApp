@@ -17,7 +17,6 @@ def new_upload(session):
         if submit_button and uploaded_files is not None:
             ul.upload_to_s3(uploaded_files, session)
 
-
 def get_list_files(session):
     object_names = lf.list_objects_in_folder(session)
 
@@ -25,37 +24,42 @@ def get_list_files(session):
     file_data = {'File Name': object_names}
     df = pd.DataFrame(file_data)
 
-    # Hiển thị nút cho mỗi file
+    # Hiển thị danh sách file và các tùy chọn
     for index, row in df.iterrows():
-        # Sử dụng `st.columns` để tạo cột
-        col1, col2, col3, col4 = st.columns(4)
+        # Tạo một khung cho mỗi dòng
+        with st.container():
+            # Hiển thị tên file ở một cột riêng
+            col1 = st.columns([1])[0]
+            col1.write(f"**File Name:** {row['File Name']}")
 
-        # Hiển thị tên file
-        col1.write(row['File Name'])
+            # Tạo một cột để chứa nút tải về, chia sẻ, và xóa
+            col2, col3, col4 = st.columns([1, 1, 1])
 
-        # Button để download
-        download_button = col2.button("Download", key=f"download_{index}")
-        if download_button:
-            if dlf.download_file_from_s3(session, row['File Name']):
-                st.success("Download successful.")
-            else:
-                st.warning("Download failed.")
-    
-        # Button để share
-        share_button = col3.button("Share", key=f"share_{index}")
-        if share_button:
-            url = shf.shared_url(session, row['File Name'])
-            st.text_area("Copy URL for sharing file: ", url)
+            # Button để download
+            download_button = col2.button("Download 📥", key=f"download_{index}")
+            if download_button:
+                if dlf.download_file_from_s3(session, row['File Name']):
+                    st.success("Download successful.")
+                else:
+                    st.warning("Download failed.")
+
+            # Button để share
+            share_button = col3.button("Share 🔗", key=f"share_{index}")
+            if share_button:
+                url = shf.shared_url(session, row['File Name'])
+                st.text_area("Copy URL for sharing file:", url, height=50)
+
+            # Button để delete
+            delete_button = col4.button("Delete 🗑️", key=f"delete_{index}")
+            if delete_button:
+                if delf.delete_file(session, row['File Name']):
+                    st.success("File deleted successfully.")
+                else:
+                    st.warning("Delete failed.")
+
+        # Tạo đường kẻ ngang để phân chia giữa các dòng
+        st.markdown("---")
 
 
-        # Button để delete
-        delete_button = col4.button("Delete", key=f"delete_{index}")
-        if delete_button:
-            if delf.delete_file(session,row['File Name']):
-                st.success("Download successful.")
-            else:
-                st.warning("Download failed.")
-        
-        st.write("")  # Xuống dòng cho dòng tiếp theo
 
 
