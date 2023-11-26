@@ -1,6 +1,5 @@
 import boto3
 from botocore.exceptions import NoCredentialsError
-import login
 
 def shared_url(session, filename):
     if session is not None:
@@ -8,7 +7,6 @@ def shared_url(session, filename):
         response = iam_client.get_user()
         username = response["User"]["UserName"]
 
-        s3_client = session.client('s3')
         s3 = session.resource('s3', config=boto3.session.Config(signature_version='s3v4'))
         bucket_name = 'storage-and-sharing-file-kbh'
         object_key = f'{username}/{filename}'

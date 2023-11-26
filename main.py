@@ -1,9 +1,6 @@
 import streamlit as st
-import boto3
 import login
-import share_file as sf
 import file_control as fc
-import time
 
 def list_files(session):
     fc.get_list_files(session)

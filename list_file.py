@@ -1,6 +1,3 @@
-import boto3
-import streamlit as st
-
 def list_objects_in_folder(session):
     bucket_name = "storage-and-sharing-file-kbh"
     iam_client = session.client('iam')

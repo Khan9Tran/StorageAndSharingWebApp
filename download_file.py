@@ -5,14 +5,24 @@ def select_folder_dialog():
     root = Tk()
     root.attributes('-topmost', True)
     root.withdraw()
+
     folder_selected = filedialog.askdirectory()
-    root.destroy()
-    return folder_selected
+
+    # Kiểm tra xem người dùng đã chọn một thư mục hay chọn cancel
+    if folder_selected:
+        root.destroy()
+        return folder_selected
+    else:
+        root.destroy()
+        return None
 
 def download_file_from_s3(session, file_download):
     if session is not None:
         s3 = session.client('s3')
         path = select_folder_dialog()
+        if path is None:
+            print(f"Please, select folder")
+            return False
         bucket_name = 'storage-and-sharing-file-kbh'
         iam_client = session.client('iam')
         response = iam_client.get_user()

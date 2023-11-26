@@ -1,5 +1,3 @@
-import boto3
-
 def delete_file(session, filename):
     try:
         s3 = session.client('s3')
