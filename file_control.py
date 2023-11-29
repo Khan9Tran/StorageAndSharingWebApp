@@ -14,8 +14,14 @@ def new_upload(session):
     # Kiểm tra xem đã có file được chọn chưa
     if uploaded_files is not None:
         submit_button = st.button("Submit")
-        if submit_button and uploaded_files is not None:
-            ul.upload_to_s3(uploaded_files, session)
+        if submit_button:
+            if uploaded_files:
+                ul.upload_to_s3(uploaded_files, session)
+            else:
+                st.warning("Please select a file!")
+    else:
+        st.warning("File selection cancelled.")
+
 
 def get_list_files(session):
     object_names = lf.list_objects_in_folder(session)
