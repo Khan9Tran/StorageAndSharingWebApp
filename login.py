@@ -46,9 +46,4 @@ def show_login_form():
     st.session_state["session"] = None
     return None
 
-if __name__ == "__main__":
-    session = show_login_form()
 
-    if session is not None:
-        # Thực hiện các thao tác cần thiết với session
-        pass
