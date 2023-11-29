@@ -22,4 +22,3 @@ def list_objects_in_folder(session):
     object_names = [obj['Key'].split('/')[-1] for obj in objects if obj['Key'] != f"{username}/"]
 
     return object_names
-
