@@ -2,6 +2,8 @@ import boto3
 from botocore.exceptions import NoCredentialsError
 
 def shared_url(session, filename):
+
+
     if session is not None:
         iam_client = session.client('iam')
         response = iam_client.get_user()
@@ -22,8 +24,9 @@ def shared_url(session, filename):
                 ExpiresIn=3600,
                 HttpMethod='GET'
             )
-            return url
 
+            return url
+        
         except NoCredentialsError:
             print("Credentials not available")
             return None
